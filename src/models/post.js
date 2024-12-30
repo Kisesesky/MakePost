@@ -1,40 +1,40 @@
 import mongoose, { Schema } from "mongoose";
 
-
-
 const PostSchema = new Schema(
     {
-        title : {
-            type : String,
-            required : true
+        title: {
+            type: String,
+            required: true
         },
-        content : String,
-        likes : {
+        content: String,
+        likes: {
             type: Number,
-            defalut: 0
+            default: 0
         },
-        view: {
+        views: {
             type: Number,
-            defalut: 0
+            default: 0
         },
-        comments: [{type: mongoose.Schema.Types.ObjectId, ref:"Comment"}],
-        author: {type: mongoose.Schema.Types.ObjectId, ref:"User"},
+        comments: [{type: mongoose.Schema.Types.ObjectId, ref: "Comment"}],
+        author: {type: mongoose.Schema.Types.ObjectId, ref: "User"}
     },
     {
-        timestamps :true
+        timestamps: true
     }
 )
-PostSchema.pre('remove', async (next)=>{ //cascading
+PostSchema.pre('findByIdAndDelete', async function(next){ //cascading
+    console.log('running remove')
     const user = await this.model("User").findByIdAndUpdate(this.author, {
-        $pull: {post: this._id}
+        $pull: {posts: this._id}
     })
     // user.posts.pull(this._id)
     // await user.save()
-    
-    await this.model("Comment").deleteMany({author: this._id}) // 1 : n의 관계라서
-    next()
+
+    await this.model("Comment").deleteMany({author: this._id})
+    next();
 })
 
-const Post = mongoose.model('Post', PostSchema);
+
+const Post = mongoose.model('Post', PostSchema)
 
 export default Post

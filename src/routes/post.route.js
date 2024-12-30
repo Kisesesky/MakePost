@@ -1,7 +1,8 @@
-import express from "express"
-import Post from "../models/post.js"
-import User from "../models/user.js"
+import express from "express";
+import Post from "../models/post.js";
+import User from "../models/user.js";
 import CommentRouter from "./comment.route.js"
+import Comment from "../models/comment.js";
 
 
 const router = express.Router();

@@ -1,11 +1,11 @@
-import User from '../models/user.js'
-import express, {Router} from 'express';
+import express from "express";
+import User from "../models/user.js";
 
 const router = express.Router();
 
-router.post('/signup', async (req,res)=>{
-    const createUser = await User.create(req.body)
-    res.status(201).json(createUser)
+router.post('/signup', async (req, res)=>{
+    const createdUser = await User.create(req.body)
+    res.status(201).json(createdUser)
 })
 
 
